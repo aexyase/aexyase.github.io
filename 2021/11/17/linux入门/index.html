@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>linux入门 - Hexo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="linux 基本操作命令用户组1、创建用户sudo adduser lilei给 lilei 用户设置密码，后面的选项的一些内容你可以选择直接回车使用默认值。这个命令不但可以添加用户到系统，同时也会,"> 
+    <meta name="author" content="天选之人"> 
+    <link rel="alternative" href="atom.xml" title="Hexo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Hexo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">linux入门</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">linux入门</h1>
+        <div class="stuff">
+            <span>十一月 17, 2021</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h1 id="linux-基本操作命令"><a href="#linux-基本操作命令" class="headerlink" title="linux 基本操作命令"></a>linux 基本操作命令</h1><h2 id="用户组"><a href="#用户组" class="headerlink" title="用户组"></a>用户组</h2><p>1、创建用户<br>sudo adduser lilei<br>给 lilei 用户设置密码，后面的选项的一些内容你可以选择直接回车使用默认值。<br>这个命令不但可以添加用户到系统，同时也会默认为新用户在 /home 目录下创建一个工作目录<br>2、切换登录用户su -l lilei<br>输入刚刚设置的 lilei 的密码<br>3、使用groupsp命令可以知道知道自己属于哪些用户组<br>其中冒号之前表示用户，后面表示该用户所属的用户组。这里可以看到 shiyanlou 用户属于 shiyanlou 用户组，每次新建用户如果不指定用户组的话，默认会自动创建一个与用户名相同的用户组（差不多就相当于家长的意思）<br>4、查看 /etc/group 文件<br>cat /etc/group | sort<br>这里 cat 命令用于读取指定文件的内容并打印到终端输出，后面会详细讲它的使用。 | sort 表示将读取的文本进行一个字典排序再输出，然后你将看到如下一堆输出，你可以在最下面看到 shiyanlou 的用户组信息<br>可以使用 grep 命令过滤掉一些你不想看到的结果：</p>
+<p>5、把用户添加到其他组<br>使用 usermod 命令可以为用户添加用户组，同样使用该命令你必需有 root 权限，你可以直接使用 root 用户为其它用户添加用户组，或者用其它已经在 sudo 用户组的用户使用 sudo 命令获取权限来执行该命令<br>查看用户所在组groups lilei<br>添加用户到别的组sudo usermod -G sudo lilei<br>再次查看groups lilei</p>
+<p>6、删除用户sudo deluser lilei –remove-home<br>使用 –remove-home 参数在删除用户时候会一并将该用户的工作目录一并删除。如果不使用那么系统会自动在 /home 目录为该用户保留工作目录。</p>
+<h2 id="linux文件权限"><a href="#linux文件权限" class="headerlink" title="linux文件权限"></a>linux文件权限</h2><p><img src="/images/linux1.png" alt="目录结构图"></p>
+<p>1、查看文件权限ls<br>ls -l<br>ls -a 显示除了 （当前目录）和 ..（上一级目录）之外的所有文件，包括隐藏文件（Linux 下以 . 开头的文件为隐藏文件）<br>ls -al<br>ls -dl&lt;目录名&gt; 查看某一个目录的完整属性，而不是显示目录里面的文件属性<br>ls -asSh  显示所有文件大小，并以普通人类能看懂的方式呈现</p>
+<p>2、更改文件所有者<br>切换用户su -lilei<br>pwd查看路径<br>home/lilei<br>touch iphone11创建文件<br>ls -alh iphone11查看文件所有者<br>切换用户su -shiyanluo<br>进入cd /home/lilei路径<br>输入sudo chown shiyanlou iphone11更改文件所有者<br>ls -alh iphone11再次查看文件所有者发现已经换成了shiyanlou</p>
+<p>3、修改文件权限<br>二进制数字表示<br>继续在lilei目录下，往添加点内容echo “echo &quot;hello shiyanlou&quot;“ &gt; iphone11</p>
+<p>然后修改权限chmod 600 iphone11<br>ls -alh iphone11查看文件所有者<br>切换lilei用户，尝试写入和读取操作，可以看到lilei用户已经 不能读取这个文件<br>输入echo “hello” &gt; iphone11 写入文件提示权限不够<br>输入cat iphone11查看文件，也提示权限不够</p>
+<p>加减赋值操作<br>继续在lilei目录下<br>输入chomd go-rw iphone11<br>g、o 还有 u 分别表示 group（用户组）、others（其他用户） 和 user（用户），+ 和 - 分别表示增加和去掉相应的权限。</p>
+<p>更多<br>adduser 和 useradd 的区别是什么</p>
+<p>答：useradd 只创建用户，不会创建用户密码和工作目录，创建完了需要使用 passwd <username> 去设置新用户的密码。adduser 在创建用户的同时，会创建工作目录和密码（提示你设置），做这一系列的操作。其实 useradd、userdel 这类操作更像是一种命令，执行完了就返回。而 adduser 更像是一种程序，需要你输入、确定等一系列操作。</p>
+<h2 id="linux目录结构及文件基本操作"><a href="#linux目录结构及文件基本操作" class="headerlink" title="linux目录结构及文件基本操作"></a>linux目录结构及文件基本操作</h2><p><img src="/images/linux2.png" alt="目录结构图"><br>输入tree /</p>
+<h1 id="因为我们的环境的原因，每次新启动实验会清除系统恢复到初始状态，所以需要手动更新软件包索引，以便我们安装时能找到相应软件包的源。"><a href="#因为我们的环境的原因，每次新启动实验会清除系统恢复到初始状态，所以需要手动更新软件包索引，以便我们安装时能找到相应软件包的源。" class="headerlink" title="因为我们的环境的原因，每次新启动实验会清除系统恢复到初始状态，所以需要手动更新软件包索引，以便我们安装时能找到相应软件包的源。"></a>因为我们的环境的原因，每次新启动实验会清除系统恢复到初始状态，所以需要手动更新软件包索引，以便我们安装时能找到相应软件包的源。</h1><p>如果提示失败就按照以下命令安装<br>sudo apt-get update<br>sudo apt-get install tree</p>
+<p>1、目录路径<br>使用 cd 命令可以切换目录，在 Linux 里面使用 . 表示当前目录，.. 表示上一级目录（注意，我们上一节介绍过的，以 . 开头的文件都是隐藏文件，所以这两个目录必然也是隐藏的，你可以使用 ls -a 命令查看隐藏文件），- 表示上一次所在目录，～ 通常表示当前用户的 home 目录。使用 pwd 命令可以获取当前所在路径（绝对路径）。<br>进入上一级目录<br>cd ..<br>进入你的 home 目录<br>cd~<br>使用 pwd 获取当前路径</p>
+<p>绝对路径</p>
+<p>关于绝对路径，简单地说就是以根” / “目录为起点的完整路径，以你所要到的目录为终点，表现形式如： /usr/local/bin，表示根目录下的 usr 目录中的 local 目录中的 bin 目录。<br>相对路径</p>
+<p>相对路径，也就是相对于你当前的目录的路径，相对路径是以当前目录 . 为起点，以你所要到的目录为终点，表现形式如： usr/local/bin （这里假设你当前目录为根目录）。你可能注意到，我们表示相对路径实际并没有加上表示当前目录的那个 . ，而是直接以目录名开头，因为这个 usr 目录为 / 目录下的子目录，是可以省略这个 . 的（以后会讲到一个类似不能省略的情况）；如果是当前目录的上一级目录，则需要使用 .. ，比如你当前目录为 /home/shiyanlou 目录下，根目录就应该表示为 ../../ ，表示上一级目录（ home 目录）的上一级目录（ / 目录）。</p>
+<h2 id="linux文件的基本操作"><a href="#linux文件的基本操作" class="headerlink" title="linux文件的基本操作"></a>linux文件的基本操作</h2><p>新建空白文件<br>cd ~<br>touch test<br>新建目录<br>mkdir mydir<br>使用 -p 参数，同时创建父目录（如果不存在该父目录），如下我们同时创建一个多级目录（这在安装软件、配置安装路径时非常有用）<br>mkdir -p father/son/grandson<br>还有一点需要注意的是，若当前目录已经创建了一个 test 文件，再使用 mkdir test 新建同名的文件夹，系统会报错文件已存在。<br>若当前目录存在一个 test 文件夹，则 touch 命令，则会更改该文件夹的时间戳而不是新建文件。</p>
+<p>复制文件<br>使用 cp 命令（copy）复制一个文件到指定目录<br>将之前创建的 test 文件复制到 /home/shiyanlou/father/son/grandson 目录中<br>cp test father/son/grandson<br>复制目录<br>如果直接使用 cp 命令复制一个目录的话，会出现如下错误<br>要成功复制目录需要加上 -r 或者 -R 参数，表示递归复制，就是说有点“株连九族”的意思<br>cp -r father family</p>
+<p>删除文件<br>使用 rm（remove files or directories）命令删除一个文件<br>rm test<br>有时候你会遇到想要删除一些为只读权限的文件，直接使用 rm 删除会显示一个提示“是否删除有写保护的普通文件”<br>你如果想忽略这提示，直接删除文件，可以使用 -f 参数强制删除<br>删除目录<br>跟复制目录一样，要删除一个目录，也需要加上 -r 或 -R 参数<br>rm -r family<br>遇到权限不足删除不了的目录也可以和删除文件一样加上 -f 参数<br>rm -rf family</p>
+<p>移动文件与重命名<br>使用 mv（move or rename files）命令移动文件（剪切）。命令格式是 mv 源目录文件 目的目录<br>mv 命令除了能移动文件外，还能给文件重命名。命令格式为 mv 旧的文件名 新的文件名<br>创建目录mkdir Documents<br>创建文件touch file1<br>移动文件mv file1 Documents</p>
+<p>重命名文件<br>mv 命令除了能移动文件外，还能给文件重命名。命令格式为 mv 旧的文件名 新的文件名<br>mv file1 myfile</p>
+<p>批量重命名<br>要实现批量重命名，mv 命令就有点力不从心了，我们可以使用一个看起来更专业的命令 rename 来实现。不过它要用 perl 正则表达式来作为参数，关于正则表达式我们要在后面才会介绍到，这里只做演示，你只要记得这个 rename 命令可以批量重命名就好了，以后再重新学习也不会有任何问题，毕竟你已经掌握了一个更常用的 mv 命令。<br>rename 命令并不是内置命令，若提示无该命令可以使用 sudo apt-get install rename 命令自行安装。<br>cd /home/shiyanlou/</p>
+<h1 id="使用通配符批量创建-5-个文件"><a href="#使用通配符批量创建-5-个文件" class="headerlink" title="使用通配符批量创建 5 个文件:"></a>使用通配符批量创建 5 个文件:</h1><p>touch file{1..5}.txt</p>
+<h1 id="批量将这-5-个后缀为-txt-的文本文件重命名为以-c-为后缀的文件"><a href="#批量将这-5-个后缀为-txt-的文本文件重命名为以-c-为后缀的文件" class="headerlink" title="批量将这 5 个后缀为 .txt 的文本文件重命名为以 .c 为后缀的文件:"></a>批量将这 5 个后缀为 .txt 的文本文件重命名为以 .c 为后缀的文件:</h1><p>rename ‘s/.txt/.c/‘ *.txt</p>
+<h1 id="批量将这-5-个文件，文件名和后缀改为大写"><a href="#批量将这-5-个文件，文件名和后缀改为大写" class="headerlink" title="批量将这 5 个文件，文件名和后缀改为大写:"></a>批量将这 5 个文件，文件名和后缀改为大写:</h1><p>rename ‘y/a-z/A-Z/‘ *.c</p>
+<p>简单解释一下上面的命令，rename 是先使用第二个参数的通配符匹配所有后缀为 .txt 的文件，然后使用第一个参数提供的正则表达式将匹配的这些文件的 .txt 后缀替换为 .c，这一点在我们后面学习了 sed 命令后，相信你会更好地理解。</p>
+<p>有的同学可能在输入时出现命令未闭合的状态，命令行会出现 quote&gt; 开头的提示符。这是因为上述命令中的 ‘ 未输入完成，这时按下 ctrl+c 即可退出该模式。还有就是注意 ‘ 必须为英文符号（半角），若输入的是中文符号（全角）也会报错。</p>
+<p>查看文件<br>使用 cat，tac 和 nl 命令查看文件</p>
+<p>前两个命令都是用来打印文件内容到标准输出（终端），其中 cat 为正序显示，tac 为倒序显示。<br>比如我们要查看之前从 /etc 目录下拷贝来的 passwd 文件<br>先复制一下cp /etc/passwd passwd<br>可以加上 -n 参数显示行号<br>然后查看cat -n passwd</p>
+<p>nl 命令，添加行号并打印，这是个比 cat -n 更专业的行号打印命令</p>
+<p>-b : 指定添加行号的方式，主要有两种：<br>    -b a:表示无论是否为空行，同样列出行号(“cat -n”就是这种方式)<br>    -b t:只列出非空行的编号并列出（默认为这种方式）<br>-n : 设置行号的样式，主要有三种：<br>    -n ln:在行号字段最左端显示<br>    -n rn:在行号字段最右边显示，且不加 0<br>    -n rz:在行号字段最右边显示，且加 0<br>-w : 行号字段占用的位数(默认为 6 位)</p>
+<p>使用 more 和 less 命令分页查看文件<br>如果说上面的 cat 是用来快速查看一个文件的内容的，那么这个 more 和 less 就是天生用来”阅读”一个文件的内容的，比如说 man 手册内部就是使用的 less 来显示内容。其中 more 命令比较简单，只能向一个方向滚动，而 less 为基于 more 和 vi （一个强大的编辑器，我们有单独的课程来让你学习）开发，功能更强大。less 的使用基本和 more 一致，具体使用请查看 man 手册，这里只介绍 more 命令的使用<br>使用 more 命令打开 passwd 文件<br>打开后默认只显示一屏内容，终端底部显示当前阅读的进度。可以使用 Enter 键向下滚动一行，使用 Space 键向下滚动一屏，按下 h 显示帮助，q 退出</p>
+<p>使用 head 和 tail 命令查看文件<br>这两个命令，那些性子比较急的人应该会喜欢，因为它们一个是只查看文件的头几行（默认为 10 行，不足 10 行则显示全部）和尾几行。还是拿 passwd 文件举例，比如当我们想要查看最近新增加的用户，那么我们可以查看这个 /etc/passwd 文件，不过我们前面也看到了，这个文件里面一大堆乱糟糟的东西，看起来实在费神啊。因为系统新增加一个用户，会将用户的信息添加到 passwd 文件的最后，那么这时候我们就可以使用 tail 命令了<br>tail /etc/passwd<br>甚至更直接的只看一行， 加上 -n 参数，后面紧跟行数</p>
+<p>关于 tail 命令，不得不提的还有它一个很牛的参数 -f，这个参数可以实现不停地读取某个文件的内容并显示。这可以让我们动态查看日志，达到实时监视的目的。不过我不会在这门基础课程中介绍它的更多细节，感兴趣的用户可以自己去了解ail -n 1 /etc/passwd<br>查看文件类型<br>我们可以使用 file 命令查看文件的类型<br>file /bin/ls<br>如果你新建了一个 shiyanlou.txt 文件，Windows 会自动把它识别为文本文件，而 file 命令会识别为一个空文件。这个前面我提到过，在 Linux 中文件的类型不是根据文件后缀来判断的。当你在文件里输入内容后才会显示文件类型</p>
+<p>编辑文件<br>在 Linux 下面编辑文件通常我们会直接使用专门的命令行编辑器比如（emacs，vim，nano），由于涉及 Linux 上的编辑器的内容比较多，且非常重要，故我们有一门单独的基础课专门介绍这中一个编辑器 vim<br>如果你想更加快速地入门，可以直接使用 Linux 内部的 vim 学习教程，输入如下命令即可开始</p>
+<h1 id="变量环境与文件查找"><a href="#变量环境与文件查找" class="headerlink" title="变量环境与文件查找"></a>变量环境与文件查找</h1><p>变量<br>要解释环境变量，得先明白变量是什么，准确的说应该是 Shell 变量，所谓变量就是计算机中用于记录一个值（不一定是数值，也可以是字符或字符串）的符号，而这些符号将用于不同的运算处理中。通常变量与值是一对一的关系，可以通过表达式读取它的值并赋值给其它变量，也可以直接指定数值赋值给任意变量。为了便于运算和处理，大部分的编程语言会区分变量的类型，用于分别记录数值、字符或者字符串等等数据类型。Shell 中的变量也基本如此，有不同类型（但不用专门指定类型名），可以参与运算，有作用域限定。<br>在 Shell 中如何创建一个变量，如何给变量赋值和如何读取变量的值呢？这部分内容会在 高级 bash 脚本编程指南 这门课中详细介绍，这里我简单举例说明一下<br>使用 declare 命令创建一个变量名为 tmp 的变量<br>declare tmp<br>使用 = 号赋值运算符，将变量 tmp 赋值为 shiyanlou。注意，与其他语言不同的是， Shell 中的赋值操作，= 两边不可以输入空格，否则会报错。</p>
+<h1 id="正确的赋值"><a href="#正确的赋值" class="headerlink" title="正确的赋值"></a>正确的赋值</h1><p>tmp=shiyanlou</p>
+<h1 id="错误的赋值"><a href="#错误的赋值" class="headerlink" title="错误的赋值"></a>错误的赋值</h1><p>tmp = shiyanlou<br>读取变量的值，使用 echo 命令和 $ 符号（$ 符号用于表示引用一个变量的值，初学者经常忘记输入）<br>echo $tmp</p>
+<p>环境变量<br>简单理解了变量的概念，就很容易理解环境变量了。环境变量的作用域比自定义变量的要大，如 Shell 的环境变量作用于自身和它的子进程。在所有的 UNIX 和类 UNIX 系统中，每个进程都有其各自的环境变量设置，且默认情况下，当一个进程被创建时，除了创建过程中明确指定的话，它将继承其父进程的绝大部分环境设置。Shell 程序也作为一个进程运行在操作系统之上，而我们在 Shell 中运行的大部分命令都将以 Shell 的子进程的方式运行<br><img src="/images/linux3.png" alt="目录结构图"><br>通常我们会涉及到的变量类型有三种：</p>
+<pre><code>当前 Shell 进程私有用户自定义变量，如上面我们创建的 tmp 变量，只在当前 Shell 中有效。
+Shell 本身内建的变量。
+从自定义变量导出的环境变量。
+</code></pre>
+<p>也有三个与上述三种环境变量相关的命令：set，env，export。这三个命令很相似，都是用于打印环境变量信息，区别在于涉及的变量范围不同</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='false'
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>

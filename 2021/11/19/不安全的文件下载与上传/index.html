@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>不安全的文件下载与上传 - Hexo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="不安全的文件下载首先打开靶场的文件下载漏洞练习选择任意图片下载，右键点击新建标签打开连接。我们发现他的实现下载的方式是通过filename=ai.png这个请求在服务器找这个文件，找到后在返回到前端,"> 
+    <meta name="author" content="天选之人"> 
+    <link rel="alternative" href="atom.xml" title="Hexo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Hexo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">不安全的文件下载与上传</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">不安全的文件下载与上传</h1>
+        <div class="stuff">
+            <span>十一月 19, 2021</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h2 id="不安全的文件下载"><a href="#不安全的文件下载" class="headerlink" title="不安全的文件下载"></a>不安全的文件下载</h2><p><img src="/images/w.png" alt="sql"><br>首先打开靶场的文件下载漏洞练习<br>选择任意图片下载，右键点击新建标签打开连接。<br>我们发现他的实现下载的方式是通过filename=ai.png这个请求在服务器找这个文件，找到后在返回到前端，如果后端的代码控制不严格就会出现任意文件下载的漏洞。<br><img src="/images/w1.png" alt="sql"><br>我们假设这是一台linux的服务器，他的目录下就有很多的固定配置和文件，我们通过../../../的方式可以跳转目录，只要输入的../够多就可以跳转到根目录，我们再以根目录为起始点../../../../../../../../../etc/passwd就可以把etc里的密码文件下载下来，同理我们还可以下载其他的固定配置文件。</p>
+<p>防护措施<br>1、对传入的文件名进行严格的过滤和限定<br>2、对文件下载的目录进行严格的限定</p>
+<h2 id="不安全的文件上传"><a href="#不安全的文件上传" class="headerlink" title="不安全的文件上传"></a>不安全的文件上传</h2><p><img src="/images/w2.png" alt="sql"><br><img src="/images/w3.png" alt="sql"></p>
+<p>文件上传漏洞之客户端验证<br>首先打开靶场<br>上传文件个php文件看看，提示不符合要求，直接在前端弹了一个框。<br>我们打开源码看看是不是在前端做了限制。<br><img src="/images/w4.png" alt="sql"><br>我们打开F12看到上传选择框是用了onchange=”checkFileExt(this.value)”的函数，意思是当状态发生改变时就会调用这个checkFileExt(this.value)函数，接下来我们去源代码看看checkFileExt这个函数是什么意思<br><img src="/images/w5.png" alt="sql"><br>我们看到源代码里checkFileExt这个函数是判断文件格式用的，如果是在前端的限制我们直接通过控制台删掉就能绕过<br><img src="/images/w6.png" alt="sql"><br>上传成功，我们上传的是一句话木马的文件，之后就可以根据一句话木马进一步进行操作=（为所欲为，但是实际还是不要这样搞了，会进局子的，证明能上传就好了，不要乱插木马）<br><img src="/images/w7.png" alt="sql"></p>
+<p>文件上传之MIME类型验证<br>没啥好说的burp抓包改包就欧克了<br><img src="/images/w8.png" alt="sql"></p>
+<p>文件上传之getimaqesize()<br><img src="/images/w9.png" alt="sql"></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='false'
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>

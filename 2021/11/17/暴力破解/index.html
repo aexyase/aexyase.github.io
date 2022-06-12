@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>暴力破解 - Hexo</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="暴力破解概述：通过下面一些词来了解一下暴力破解连续性尝试+字典+自动化一个有效的字典，可以大大的提高暴力破解的效率1、常用的账号密码（弱口令），比如常用用户名/密码top 500等。2、互联网上 被,"> 
+    <meta name="author" content="天选之人"> 
+    <link rel="alternative" href="atom.xml" title="Hexo" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">Hexo</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://example.com"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">暴力破解</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">暴力破解</h1>
+        <div class="stuff">
+            <span>十一月 17, 2021</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h1 id="暴力破解概述："><a href="#暴力破解概述：" class="headerlink" title="暴力破解概述："></a>暴力破解概述：</h1><p>通过下面一些词来了解一下暴力破解<br>连续性尝试+字典+自动化<br>一个有效的字典，可以大大的提高暴力破解的效率<br>1、常用的账号密码（弱口令），比如常用用户名/密码top 500等。<br>2、互联网上 被脱裤后账号密码（社工库），比如csdn当年泄露的约600w用户信息。<br>3、使用指定的字符使用工具按照指定的规则进行排列组合算法生成的密码。</p>
+<p>如果一个网站没有对登录接口实施防爆力破解的措施，或者实施了不合理的措施。<br>则该称网站存在暴力破解漏洞。<br>1、是否要求用户设置了复杂的密码；<br>2、是否每次认证都使用安全的验证码；<br>3、是否对尝试登录的行为进行判断和限制；<br>4、是否在必要的情况下采用了双因素认证；<br>……等等</p>
+<p>暴力破解漏洞测试流程<br>1确认登录接口的脆弱性<br>确认目标是否存在暴力破解的漏洞。（确认被暴力破解的可能性）<br>尝试登录-抓包–观察验证元素和response信息，判断是否存在暴力破解的可能</p>
+<p>2对字典进行优化<br>根据实际情况对字典进行优化，提高爆破过程的效率。</p>
+<p>3工具自动化操作<br>配置自动化工具（比如线程，超时时间，重试次数等），进行自动化操作。</p>
+<p>技巧一：<br>根据注册提示信息进行优化<br>对目标站点进行注册，搞清楚账号密码的一些限制，比如目标站点要求密码必须是6位以上，字母数字组合，则可以按照此优化字典，比如去掉不符合要求的密码。</p>
+<p>技巧二：<br>如果爆破的是管理后台，往往这种系统的管理员是admin/administrator/root的机率比较高，可以使用这三个账号+随便一个密码，尝试登录，观看返回的结果，确定用户名。<br>比如：<br>输入xxx/yyyf/返回“用户名或密码错误”；<br>输入admin/yyy返回“密码错误”，则基本可以确定用户名是admin;<br>因此 可以只对密码进行爆破即可，提高效率。</p>
+<p>基于表单的暴力破解实验<br>环境pikachu靶场<br>工具burp suite</p>
+<p>intruder模块可以通过对http request的数据包以变量的方式自定义参数，然后根据对应策略进行自动化的重放。常用于自动化猜测/暴力破解过程中。</p>
+<p>target选项卡<br>设置攻击目标，可以通过proxy发送；<br>pasitions选项卡<br>指定需要暴力破解的参数并设置成变量，同时选择攻击模式；</p>
+<p>sniper:狙击手<br>设置一个payload，，先将第一个变量使用字典进行测试，然后在将第二个变量使用字典进行测试;</p>
+<p>Battering ram:冲撞车<br>设置一个payload，所有的变量一起用字典内容被替换，然后一起尝试;</p>
+<p>Ptichfork:草叉型<br>每个变量设置一个payload，分别使用对应的字典对变量进行同时替换;</p>
+<p>Cluster bomb:焦束炸弹<br>需要为每个变量设置一个payload，分别使用字典内容组合对变量进行替换;</p>
+<p>payloads选项卡<br>设置字典，并可以对字典进行统一的策略处理；</p>
+<p>options选项卡<br>对扫描的线程、失败重试等进行配置；<br>对结果设置匹配的flag；通过一个标识符来区别结果，并在结果栏中flag出来；</p>
+<p>我们进入登录页面<br><img src="/images/1.png" alt="图一"><br>随便输一个账号密码登录，代理-抓包，抓到包之后ctrl+l把数据包发到暴力破解模块<br><img src="/images/2.png" alt="图一"><br>导入字典直接strt 攻击<br><img src="/images/3.png" alt="图一"><br>破解出来的账号或者密码就会显示到最上面的几行，序号和别的不一样的就是。<br>应该是细致一点的，但是我不管那么多，冲冲，不得就换下一个漏洞，搞那么多干嘛！<br><img src="/images/4.png" alt="图一"></p>
+<h1 id="暴力破解的绕过和防范（验证码-amp-token）"><a href="#暴力破解的绕过和防范（验证码-amp-token）" class="headerlink" title="暴力破解的绕过和防范（验证码&amp;token）"></a>暴力破解的绕过和防范（验证码&amp;token）</h1><p>客户端request登录页面，后台生成验证码：<br>1、后台使用算法生成图片，并将图片request给客户端；<br>2、同时将算法生成的值全局赋值存到SESSION中</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='false'
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
